@@ -93,7 +93,7 @@ linter:
     - control_flow_in_finally
     - curly_braces_in_flow_control_structures
     - dangling_library_doc_comments
-    - depend_on_referenced_packages
+    # - depend_on_referenced_packages
     - deprecated_consistency
     # - deprecated_member_use_from_same_package # we allow self-references to deprecated members
     # - diagnostic_describe_all_properties # enabled only at the framework level (packages/flutter/lib)

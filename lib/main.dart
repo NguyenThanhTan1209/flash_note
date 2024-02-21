@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:nested/nested.dart';
+import 'business_logic/blocs/note/note_bloc.dart';
 import 'view/screens/list_screen.dart';
 import 'view/screens/note_screen.dart';
 
@@ -14,13 +16,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primaryColor: const Color(0xff7F00FF),
-        secondaryHeaderColor: const Color(0xfffff000),
-        textTheme: GoogleFonts.interTextTheme(),
+    return MultiBlocProvider(
+      providers: <SingleChildWidget>[
+        BlocProvider<NoteBloc>(
+          create: (BuildContext context) => NoteBloc(),
+        ),
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          primaryColor: const Color(0xff7F00FF),
+          secondaryHeaderColor: const Color(0xfffff000),
+          textTheme: GoogleFonts.interTextTheme(),
+        ),
+        home: const HomePage(),
       ),
-      home: const HomePage(),
     );
   }
 }
