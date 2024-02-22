@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 class ReadAndWriteFileProvider {
+  
   Future<String> get _localPath async {
     final Directory directory = await getApplicationDocumentsDirectory();
     final Directory subFolder = Directory('${directory.path}/flash_note');
