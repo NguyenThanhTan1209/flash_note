@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nested/nested.dart';
+import 'business_logic/blocs/list_file/list_file_bloc.dart';
 import 'business_logic/blocs/note/note_bloc.dart';
 import 'view/screens/list_screen.dart';
 import 'view/screens/note_screen.dart';
@@ -20,6 +21,9 @@ class MyApp extends StatelessWidget {
       providers: <SingleChildWidget>[
         BlocProvider<NoteBloc>(
           create: (BuildContext context) => NoteBloc(),
+        ),
+        BlocProvider<ListFileBloc>(
+          create: (BuildContext context) => ListFileBloc(),
         ),
       ],
       child: MaterialApp(
