@@ -21,62 +21,63 @@ class _NoteScreenState extends State<NoteScreen> {
       TextEditingController();
 
   void _showAddNoteDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return SimpleDialog(
-          title: const Text(StringContants.addNoteDialogTitle),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: NumberContants.contentPadding16,
-          ),
-          children: <Widget>[
-            const SizedBox(
-              height: NumberContants.height16,
+    if (_noteEditingController.text.isNotEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            title: const Text(StringContants.addNoteDialogTitle),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: NumberContants.contentPadding16,
             ),
-            TextField(
-              autofocus: true,
-              controller: _fileNameEditingController,
-              maxLines: null,
-              keyboardType: TextInputType.multiline,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: StringContants.addNoteHintText,
+            children: <Widget>[
+              const SizedBox(
+                height: NumberContants.height16,
               ),
-            ),
-            const SizedBox(
-              height: NumberContants.height16,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Cancel'),
+              TextField(
+                autofocus: true,
+                controller: _fileNameEditingController,
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: StringContants.addNoteHintText,
                 ),
-                const SizedBox(
-                  width: NumberContants.width16,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    _handleCreateNewNote(
-                      _fileNameEditingController.text,
-                      _noteEditingController.text,
-                    );
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Save'),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: NumberContants.height16,
-            ),
-          ],
-        );
-      },
-    );
+              ),
+              const SizedBox(
+                height: NumberContants.height16,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  const SizedBox(
+                    width: NumberContants.width16,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      _handleCreateNewNote(
+                        _fileNameEditingController.text,
+                        _noteEditingController.text,
+                      );
+                    },
+                    child: const Text('Save'),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: NumberContants.height16,
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   void _handleCreateNewNote(String fileName, String fileContent) {
@@ -90,6 +91,7 @@ class _NoteScreenState extends State<NoteScreen> {
       context
           .read<NoteBloc>()
           .add(AddNewNote(fileName: fileName, fileContent: fileContent));
+      Navigator.of(context).pop();
     }
   }
 
