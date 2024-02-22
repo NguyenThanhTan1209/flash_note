@@ -9,6 +9,7 @@ import '../../business_logic/blocs/list_file/list_file_state.dart';
 import '../utils/color_contants.dart';
 import '../utils/number_contants.dart';
 import '../utils/string_contants.dart';
+import 'list_item_detail_screen.dart';
 
 class ListScreen extends StatefulWidget {
   const ListScreen({super.key});
@@ -38,22 +39,44 @@ class _ListScreenState extends State<ListScreen> {
           child: BlocBuilder<ListFileBloc, ListFileState>(
             builder: (BuildContext context, ListFileState state) {
               if (state is ListFileSucessState) {
-                return ListView.separated(
-                  itemBuilder: (BuildContext context, int index) {
-                    final FileSystemEntity item = state.fileList[index];
-                    return ListTile(
-                      title: Text('${item.path.split('/').last}.txt'),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const Divider();
-                  },
-                  itemCount: state.fileList.length,
+                return state.fileList.isNotEmpty
+                    ? ListView.separated(
+                        itemBuilder: (BuildContext context, int index) {
+                          final FileSystemEntity item = state.fileList[index];
+                          final String fileName = item.path.split('/').last.split('.').first;
+                          
+                          return ListTile(
+                            title: Text(fileName),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                    return ListItemDetailScreen(
+                                      fileName: fileName,
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const Divider();
+                        },
+                        itemCount: state.fileList.length,
+                      )
+                    : const Center(
+                        child: Text('There are no notes files'),
+                      );
+              } else if (state is ListFileFailedState) {
+                return Center(
+                  child: Text(state.error),
                 );
-              } else if(state is ListFileFailedState){
-                return Center(child: Text(state.error),);
-              } else if(state is ListFileLoadingState){
-                return const Center(child: CircularProgressIndicator(),);
+              } else if (state is ListFileLoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
               } else {
                 return const SizedBox();
               }
