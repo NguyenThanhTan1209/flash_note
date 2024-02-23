@@ -5,8 +5,7 @@ import 'note_event.dart';
 import 'note_state.dart';
 
 class NoteBloc extends Bloc<NoteEvent, NoteState> {
-
-  NoteBloc() : super(NoteInitialState()){
+  NoteBloc() : super(NoteInitialState()) {
     on<AddNewNote>((AddNewNote event, Emitter<NoteState> emit) async {
       emit(NoteLoadingState());
       try {
@@ -16,7 +15,18 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
         emit(NoteFaileState(error: e.toString()));
       }
     });
+    on<DeleteNote>(
+      (DeleteNote event, Emitter<NoteState> emit) async {
+        emit(NoteLoadingState());
+        try {
+          await _repository.deleteData(event.fileName);
+          emit(NoteSucessState(fileName: event.fileName));
+        } catch (e) {
+          emit(NoteFaileState(error: e.toString()));
+        }
+      },
+    );
   }
-  
+
   final ReadAndWriteFileRepository _repository = ReadAndWriteFileRepository();
 }

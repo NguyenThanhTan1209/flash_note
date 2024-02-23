@@ -3,19 +3,20 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 class ReadAndWriteFileProvider {
+  
   Future<String> get _localPath async {
     final Directory directory = await getApplicationDocumentsDirectory();
-
-    return '${directory.path}/flash_note';
+    final Directory subFolder = Directory('${directory.path}/flash_note');
+    if (!(await subFolder.exists())) {
+      subFolder.create();
+    }
+    return subFolder.path;
   }
 
   Future<File> _localFile(String fileName) async {
     final String path = await _localPath;
-    final Directory subFolder = Directory(path);
-    if (!(await subFolder.exists())) {
-      subFolder.create();
-    }
-    return File('$path/$fileName');
+
+    return File('$path/$fileName.txt');
   }
 
   Future<File> writeCounter(String fileName, String content) async {
@@ -48,5 +49,10 @@ class ReadAndWriteFileProvider {
       // If encountering an error, return 0
       throw Exception(e);
     }
+  }
+
+  Future<void> deleteData(String fileName) async {
+    final File file = await _localFile(fileName);
+    file.delete();
   }
 }

@@ -24,4 +24,8 @@ class ReadAndWriteFileRepository {
       throw Exception(e);
     }
   }
+
+  Future<void> deleteData(String fileName) async {
+    await _provider.deleteData(fileName);
+  }
 }

@@ -21,7 +21,7 @@ class _NoteScreenState extends State<NoteScreen> {
       TextEditingController();
 
   void _showAddNoteDialog() {
-    if (_noteEditingController.text.isNotEmpty) {
+    if (_noteEditingController.text.trim().isNotEmpty) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -77,6 +77,12 @@ class _NoteScreenState extends State<NoteScreen> {
           );
         },
       );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(StringContants.warningAboutEmptyFileContent),
+        ),
+      );
     }
   }
 
@@ -91,6 +97,8 @@ class _NoteScreenState extends State<NoteScreen> {
       context
           .read<NoteBloc>()
           .add(AddNewNote(fileName: fileName, fileContent: fileContent));
+      _fileNameEditingController.clear();
+      _noteEditingController.clear();
       Navigator.of(context).pop();
     }
   }
