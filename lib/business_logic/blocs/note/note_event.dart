@@ -9,3 +9,9 @@ class AddNewNote extends NoteEvent {
   final String fileName;
   final String fileContent;
 }
+
+class DeleteNote extends NoteEvent {
+  DeleteNote({required this.fileName});
+
+  final String fileName;
+}

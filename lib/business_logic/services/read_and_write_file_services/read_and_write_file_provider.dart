@@ -50,4 +50,9 @@ class ReadAndWriteFileProvider {
       throw Exception(e);
     }
   }
+
+  Future<void> deleteData(String fileName) async {
+    final File file = await _localFile(fileName);
+    file.delete();
+  }
 }
